@@ -1,23 +1,36 @@
-import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import React,{useState} from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
 import Cep from './components/Cep';
+import Api from './components/Api';
 
 export default function App() {
+  const [cep, setCep] = useState("");
+  const [inputCep, setInputCep] = useState(0);
+
+  async function buscarCep(){
+    const response = await Api.get('ws/'+inputCep+'/json/');
+    setCep(response.data);
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.bloco}>
-        <Text style={styles.text}> Digite seu CPF:</Text>
+        <Text style={styles.text}> Digite aqui seu CPF:</Text>
         
         <TextInput 
         placeholder='ex: 11730-000' 
         keyboardType= 'numeric' 
-        style={styles.input}/>
+        style={styles.input}
+        onChangeText={(data)=>setInputCep(data)}/>
 
-     <TouchableOpacity style={styles.botao}> 
+        <TouchableOpacity 
+          style={styles.botao}
+          onPress={buscarCep}
+        > 
           <Text style={styles.txtBotao}> Buscar</Text>
-          </TouchableOpacity>
+        </TouchableOpacity>
 
-          <Cep/>
+        <Cep data={cep} />
       </View>
     </View>
   );

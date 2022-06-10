@@ -1,36 +1,30 @@
 import React,{useState} from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
-import Cep from './components/Cep';
+import Dolar from './components/Dolar';
 import Api from './components/Api';
 
 export default function App() {
-  const [cep, setCep] = useState("");
-  const [inputCep, setInputCep] = useState(0);
+  const [dolar, setDolar] = useState("");
 
-  async function buscarCep(){
-    const response = await Api.get('ws/'+inputCep+'/json/');
-    setCep(response.data);
+  async function buscarDolar(){
+    const response = await Api.get('json/last/USD-BRL');
+    setDolar(response.data.USDBRL);
+
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.bloco}>
-        <Text style={styles.text}> Digite aqui seu CPF:</Text>
-        
-        <TextInput 
-        placeholder='ex: 11730-000' 
-        keyboardType= 'numeric' 
-        style={styles.input}
-        onChangeText={(data)=>setInputCep(data)}/>
+        <Text style={styles.text}> Converter Dólar para Real</Text>
 
         <TouchableOpacity 
           style={styles.botao}
-          onPress={buscarCep}
+          onPress={buscarDolar}
         > 
-          <Text style={styles.txtBotao}> Buscar</Text>
+          <Text style={styles.txtBotao}> Converter</Text>
         </TouchableOpacity>
 
-        <Cep data={cep} />
+        <Dolar data={dolar} />
       </View>
     </View>
   );
@@ -62,7 +56,7 @@ input:{
 },
 
 botao:{
-  width: '80%',
+  width: '85%',
   height: 40,
   marginTop:30,
   backgroundColor:'#8dd8eb',
